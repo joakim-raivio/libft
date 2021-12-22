@@ -3,48 +3,75 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strsplit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jraivio <jraivio@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: msilen <msilen@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/10 15:08:49 by jraivio           #+#    #+#             */
-/*   Updated: 2021/11/29 14:25:28 by jraivio          ###   ########.fr       */
+/*   Created: 2021/11/22 18:33:49 by msilen            #+#    #+#             */
+/*   Updated: 2021/11/29 16:18:58 by msilen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-static char	**freearray(char ***result, int j)
+static int	word_counter(const char *s, char c)
 {
-	while (j >= 0)
-		ft_strdel(&(result[0][j--]));
-	free(*result);
-	return (NULL);
+	int	i;
+	int	count;
+
+	count = 0;
+	i = 0;
+	while (*s)
+	{
+		if (*s != c && i == 0)
+		{
+			count++;
+			i++;
+		}
+		else if (*s == c && i == 1)
+			i = 0;
+		s++;
+	}
+	return (count);
 }
 
-char	**ft_strsplit(const char *s, char c)
+static char	*allocate_str(char const *s, char c)
+{
+	int		total_len;
+	void	*str;
+
+	total_len = 0;
+	while (s[total_len] != c && s[total_len])
+		total_len++;
+	str = ft_strnew(total_len);
+	if (!str)
+		return (NULL);
+	str = ft_strncpy(str, s, total_len);
+	return (str);
+}
+
+char	**ft_strsplit(char const *s, char c)
 {
 	char	**result;
+	int		count;
 	int		i;
-	int		j;
 
+	if (!s)
+		return (NULL);
+	count = word_counter(s, c);
+	result = (char **)malloc((count + 1) * sizeof(char *));
+	if (!result)
+		return (NULL);
 	i = 0;
-	j = 0;
-	if (c == '\0')
-		return (NULL);
-	result = (char **)malloc(sizeof(char **) * (size_t)(ft_cntwords(s, c) + 1));
-	if (!result || sizeof(result) == 0)
-		return (NULL);
-	while (s[i])
+	while (*s)
 	{
-		if (s[i] != c)
-		{
-			result[j] = ft_get_delim_str(s, c, i);
-			if (!result[j])
-				return (freearray(&result, j - 1));
-			i += ft_strlen(result[j++]);
-		}
-		else
-			i++;
+		while (*s == c)
+			s++;
+		if (*s == '\0')
+			break ;
+		result[i] = allocate_str(s, c);
+		s += ft_strlen(result[i]);
+		i++;
 	}
-	result[j] = NULL;
+	result[i] = NULL;
 	return (result);
 }

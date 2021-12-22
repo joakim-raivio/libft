@@ -1,8 +1,10 @@
 NAME = libft.a
 
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra -I includes
 
 CC = gcc
+
+TEST = test_bin
 
 FUNCTIONS = ft_memset ft_bzero ft_memcpy ft_memccpy ft_memmove ft_memchr 	   \
 			ft_memcmp ft_strlen ft_strdup ft_strcpy ft_strncpy ft_strcat 	   \
@@ -21,20 +23,20 @@ OBJS = $(foreach obj, $(FUNCTIONS), $(addsuffix .o, $(obj)))
 
 SRCS = $(foreach src, $(FUNCTIONS), $(addsuffix .c, $(src)))
 
-.PHONY = all $(NAME) clean fclean re run testcomp print
+all: $(NAME) 
 
-all:
+$(NAME): 
 	$(CC) $(FLAGS) -c $(SRCS) 
 	ar -r $(NAME) $(OBJS)
-
-$(NAME): all
 
 clean:
 	rm -f $(OBJS)
 
 fclean: clean
 	rm -f $(NAME)
-	rm -f a.out
+
+testclean:
+	rm -f $(TEST)
 
 re: fclean all
 
@@ -42,17 +44,17 @@ testlib: fclean
 	$(CC) $(FLAGS) -g -c $(SRCS) 
 	ar -r $(NAME) $(OBJS)
 
-testcomp: re
-	$(CC) $(FLAGS) test.c -L. -lft
+testcomp: re testclean
+	$(CC) $(FLAGS) test.c -L. -lft -o $(TEST)
 
-testcompdebug: testlib
-	$(CC) $(FLAGS) -O0 -g test.c -L. -lft
+testcompdebug: testlib testclean
+	$(CC) $(FLAGS) -O0 -g test.c -L. -lft -o $(TEST)
 
 run: testcomp
-	./a.out
+	./$(TEST)
 
 print: testcomp
-	./a.out 1
+	./$(TEST) 1
 
 debug: testcompdebug
-	lldb a.out
+	lldb $(TEST)

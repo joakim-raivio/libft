@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar.c                                       :+:      :+:    :+:   */
+/*   ft_swap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jraivio <jraivio@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: jraivio <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/01 14:09:19 by jraivio           #+#    #+#             */
-/*   Updated: 2021/12/21 18:12:18 by jraivio          ###   ########.fr       */
+/*   Created: 2021/10/28 12:01:36 by jraivio           #+#    #+#             */
+/*   Updated: 2021/11/01 14:10:57 by jraivio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void	ft_putchar(char c)
+void	ft_swap(int *a, int *b)
 {
-	write(1, &c, 1);
+	int	temp;
+
+	temp = *a;
+	*a = *b;
+	*b = temp;
 }
