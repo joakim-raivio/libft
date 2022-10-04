@@ -25,15 +25,19 @@ SRCS = $(foreach src, $(FUNCTIONS), $(addsuffix .c, $(src)))
 
 all: $(NAME) 
 
-$(NAME): 
-	$(CC) $(FLAGS) -c $(SRCS) 
-	ar -r $(NAME) $(OBJS)
+$(NAME):
+	@echo "Compiling libft object files\n" 
+	@$(CC) $(FLAGS) -c $(SRCS) 
+	@echo "Packaging libft\n"
+	@ar -rc $(NAME) $(OBJS)
 
 clean:
-	rm -f $(OBJS)
+	@echo "Cleaning libft object files\n"
+	@rm -f $(OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	@echo "Cleaning libft library\n"
+	@rm -f $(NAME)
 
 testclean:
 	rm -f $(TEST)
@@ -42,7 +46,7 @@ re: fclean all
 
 testlib: fclean
 	$(CC) $(FLAGS) -g -c $(SRCS) 
-	ar -r $(NAME) $(OBJS)
+	ar -rc $(NAME) $(OBJS)
 
 testcomp: re testclean
 	$(CC) $(FLAGS) test.c -L. -lft -o $(TEST)
