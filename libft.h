@@ -6,7 +6,7 @@
 /*   By: jraivio <jraivio@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 13:08:15 by jraivio           #+#    #+#             */
-/*   Updated: 2021/12/02 11:32:26 by jraivio          ###   ########.fr       */
+/*   Updated: 2022/10/11 17:19:08 by jraivio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
+# define BUFF_SIZE 8
 
 typedef struct s_list
 {
@@ -23,6 +24,15 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
+typedef struct s_buff
+{
+	char	buff[BUFF_SIZE];
+	size_t	buff_i;
+	int		fd;
+	ssize_t	read_result;
+}	t_buff;
+
+int		get_next_line(const int fd, char **line);
 void	*ft_memset(void *b, int c, size_t len);
 void	ft_bzero(void *s, size_t n);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
@@ -59,7 +69,7 @@ void	ft_strdel(char **as);
 void	ft_strclr(char *s);
 char	**ft_strsplit(const char *s, char c);
 char	*ft_get_delim_str(const char *s, char c, int i);
-int		ft_cntwords(const char *s, char c);
+int		ft_countwords(const char *s, char c);
 void	ft_striter(char *s, void (*f)(char *));
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
 char	*ft_strmap(const char *s, char (*f)(char));
@@ -89,5 +99,12 @@ t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void	ft_memclear(void *ptr, size_t size);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 int		ft_iswhitespace(char c);
+void	ft_lstpopref(t_list *head, t_list **ref);
+char	*ft_strjoind(const char *s1, const char *s2, const char c);
+char	**ft_strsplit_free(const char *s, char c);
+char	**ft_freearray(char ***result, int j);
+int		ft_intmax(int x, int y);
+int		ft_intmin(int x, int y);
+int		ft_clampint(int input, int min, int max);
 
 #endif
